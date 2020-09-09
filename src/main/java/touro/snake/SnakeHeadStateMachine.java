@@ -22,7 +22,7 @@ public class SnakeHeadStateMachine {
     /**
      * Turns the Snake in the newDirection if that is legal. If the Snake is currently facing
      * East or West then it can only turn North or South. If the Snake is currently facing North
-     * or South then it can only face East or West.
+     * or South then it can only turn East or West.
      * @param newDirection
      */
     public void turnTo(Direction newDirection) {
