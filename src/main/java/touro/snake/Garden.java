@@ -45,6 +45,7 @@ public class Garden {
      * @return true if the Snake is still alive, otherwise false.
      */
     boolean moveSnake() {
+        // Gutmann
         throw new UnsupportedOperationException("Not Implemented Yet.");
     }
 
@@ -52,6 +53,7 @@ public class Garden {
      * Creates a Food if there isn't one, making sure it's not already on a Square occupied by the Snake.
      */
     void createFoodIfNecessary() {
+        // Nagel
         throw new UnsupportedOperationException("Not Implemented Yet.");
     }
 

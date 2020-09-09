@@ -20,14 +20,17 @@ public class GardenView extends JComponent {
     }
 
     void paintGrass(Graphics g) {
+        // Berger
         throw new UnsupportedOperationException("Not Implemented Yet.");
     }
 
     void paintSnake(Graphics g) {
+        // Orlian
         throw new UnsupportedOperationException("Not Implemented Yet.");
     }
 
     void paintFood(Graphics g) {
+        // Berger
         throw new UnsupportedOperationException("Not Implemented Yet.");
     }
 }

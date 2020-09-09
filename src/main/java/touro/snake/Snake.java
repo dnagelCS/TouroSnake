@@ -55,6 +55,7 @@ public class Snake {
      * Moves the Snake forward in whatever direction the head is facing.
      */
     public void move() {
+        // Weinfeld
         throw new UnsupportedOperationException("Not Implemented Yet.");
     }
 
@@ -70,6 +71,7 @@ public class Snake {
      * @return true if the Snake is within the bounds of the Garden, otherwise false.
      */
     public boolean inBounds() {
+        // Aufrichtig
         throw new UnsupportedOperationException("Not Implemented Yet.");
     }
 
@@ -77,6 +79,7 @@ public class Snake {
      * @return true if the head of the Snake has intersected with itself, otherwise false.
      */
     public boolean eatsSelf() {
+        // Alter
         throw new UnsupportedOperationException("Not Implemented Yet.");
     }
 

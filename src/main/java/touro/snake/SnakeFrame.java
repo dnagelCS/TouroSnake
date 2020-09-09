@@ -10,6 +10,7 @@ public class SnakeFrame extends JFrame {
     ) throws HeadlessException {
         super();
 
+        // Komendant
         throw new UnsupportedOperationException("Not Implemented Yet.");
 
     }
