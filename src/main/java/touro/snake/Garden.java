@@ -1,5 +1,7 @@
 package touro.snake;
 
+import java.util.List;
+
 /**
  * A model that contains the Snake and Food and is responsible for logic of moving the Snake,
  * seeing that food has been eaten and generating new food.
@@ -53,8 +55,19 @@ public class Garden {
      * Creates a Food if there isn't one, making sure it's not already on a Square occupied by the Snake.
      */
     void createFoodIfNecessary() {
-        // Nagel
-        throw new UnsupportedOperationException("Not Implemented Yet.");
+
+        if (snake.contains(food) == true) {
+            List<Square> snakeBody = snake.getSquares();
+            int x = 0;
+            int y = 0;
+            Square square = new Square(x,y);
+
+            if (square.equals(snakeBody)) {
+                ;
+            } else {
+                foodFactory.newInstance();
+            }
+        }
     }
 
 }
