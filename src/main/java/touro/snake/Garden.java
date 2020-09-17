@@ -1,7 +1,5 @@
 package touro.snake;
 
-import java.util.List;
-
 /**
  * A model that contains the Snake and Food and is responsible for logic of moving the Snake,
  * seeing that food has been eaten and generating new food.
@@ -42,30 +40,39 @@ public class Garden {
     }
 
     /**
-     * Moves the Snake, eats the Food or collides with the wall (edges of the Garden).
+     * Moves the Snake, eats the Food or collides with the wall (edges of the Garden), or eats self.
      *
      * @return true if the Snake is still alive, otherwise false.
      */
     boolean moveSnake() {
-        // Gutmann
-        throw new UnsupportedOperationException("Not Implemented Yet.");
+        snake.move();
+
+        //if collides with wall or self
+        if (!snake.inBounds() || snake.eatsSelf()) {
+            return false;
+        }
+
+        //if snake eats the food
+        if (snake.getHead().equals(food)) {
+            //add square to snake
+            snake.grow();
+            //remove food
+            food = null;
+        }
+        return true;
     }
 
     /**
      * Creates a Food if there isn't one, making sure it's not already on a Square occupied by the Snake.
      */
     void createFoodIfNecessary() {
+        //if snake ate food, create new one
+        if (food == null) {
+            food = foodFactory.newInstance();
 
-        if (snake.contains(food) == true) {
-            List<Square> snakeBody = snake.getSquares();
-            int x = 0;
-            int y = 0;
-            Square square = new Square(x,y);
-
-            if (square.equals(snakeBody)) {
-                ;
-            } else {
-                foodFactory.newInstance();
+            //if new food on snake, put it somewhere else
+            while (snake.contains(food)) {
+                food = foodFactory.newInstance();
             }
         }
     }

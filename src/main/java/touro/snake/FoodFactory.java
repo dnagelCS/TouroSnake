@@ -10,9 +10,13 @@ public class FoodFactory {
     /**
      * @return a new Food with random coordinates in the Garden
      */
+
+    private final Random rand = new Random();
+
     public Food newInstance() {
-        // Peikes
-        throw new UnsupportedOperationException("Not Implemented Yet.");
+        int randX = rand.nextInt(Garden.WIDTH);
+        int randY = rand.nextInt(Garden.HEIGHT);
+        return new Food(randX,randY);
     }
 
 }

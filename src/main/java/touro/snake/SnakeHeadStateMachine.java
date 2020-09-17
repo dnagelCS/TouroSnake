@@ -7,7 +7,7 @@ import static touro.snake.Direction.West;
  * State machine that controls the turning the direction of the Snake head.
  * https://en.wikipedia.org/wiki/State_pattern
  */
-public class SnakeHeadStateMachine {
+public class  SnakeHeadStateMachine {
 
     private Direction direction;
 
@@ -26,8 +26,21 @@ public class SnakeHeadStateMachine {
      * @param newDirection
      */
     public void turnTo(Direction newDirection) {
-        // Agishtein
-        throw new UnsupportedOperationException("Not Implemented Yet.");
+        boolean dirVert = this.checkOrientation(direction);
+        boolean newDirVert = this.checkOrientation(newDirection);
+
+        if((dirVert && newDirVert)||(!dirVert && !newDirVert)){
+            return;
+        }
+        else{
+            direction = newDirection;
+        }
+    }
+    public boolean checkOrientation(Direction dir){
+        if (dir == North || dir == South){
+            return true;
+        }
+        return false;
     }
 
 }
