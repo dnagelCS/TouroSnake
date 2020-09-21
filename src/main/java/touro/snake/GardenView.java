@@ -18,6 +18,7 @@ public class GardenView extends JComponent {
         paintGrass(g);
         paintFood(g);
         paintSnake(g);
+        paintPoison(g);
     }
 
     void paintGrass(Graphics g) {
@@ -41,6 +42,17 @@ public class GardenView extends JComponent {
 
             int x = food.getX() * CELL_SIZE;
             int y = food.getY() * CELL_SIZE;
+            g.fillRect(x, y, CELL_SIZE, CELL_SIZE);
+        }
+    }
+
+    void paintPoison(Graphics g) {
+        if (garden.getPoison() != null) {
+            Poison poison = garden.getPoison();
+            g.setColor(Color.MAGENTA);
+
+            int x = poison.getX() * CELL_SIZE;
+            int y = poison.getY() * CELL_SIZE;
             g.fillRect(x, y, CELL_SIZE, CELL_SIZE);
         }
     }

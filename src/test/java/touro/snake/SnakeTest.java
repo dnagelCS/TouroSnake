@@ -82,6 +82,74 @@ public class SnakeTest {
     }
 
     @Test
+    public void intersectsPoison_true() {
+        //given
+        SnakeHeadStateMachine snakeHeadStateMachine = mock(SnakeHeadStateMachine.class);
+        Snake snake = new Snake(snakeHeadStateMachine);
+
+        Poison poison = new Poison(25,25);
+        Square snakeSquare = new Square(25,25);
+        List<Square> list = snake.getSquares();
+        list.set(4,snakeSquare);
+
+        //when
+        snake.intersects(poison);
+
+        //then
+        assertEquals(snakeSquare, poison);
+        assertTrue(snake.intersects(poison));
+    }
+
+    @Test
+    public void intersectsPoison_false() {
+        //given
+        SnakeHeadStateMachine snakeHeadStateMachine = mock(SnakeHeadStateMachine.class);
+        Snake snake = new Snake(snakeHeadStateMachine);
+        Poison poison = mock(Poison.class);
+
+        //when
+        snake.intersects(poison);
+
+        //then
+        assertFalse(snake.intersects(poison));
+    }
+
+    @Test
+    public void drinksPoison_true() {
+        //given
+        SnakeHeadStateMachine snakeHeadStateMachine = mock(SnakeHeadStateMachine.class);
+        Snake snake = new Snake(snakeHeadStateMachine);
+
+        Poison poisonSquare = new Poison(50,50);
+        Square snakeHead = new Square(50,50);
+        List<Square> squares = snake.getSquares();
+        squares.set(0,snakeHead);
+
+        //when
+        snake.drinksPoison(poisonSquare);
+
+        //then
+        assertEquals(snakeHead, poisonSquare);
+        assertEquals(snake.getHead(), snakeHead);
+        assertEquals(snake.getHead(), poisonSquare);
+        assertTrue(snake.drinksPoison(poisonSquare));
+    }
+
+    @Test
+    public void drinksPoison_false() {
+        //given
+        SnakeHeadStateMachine snakeHeadStateMachine = mock(SnakeHeadStateMachine.class);
+        Snake snake = new Snake(snakeHeadStateMachine);
+        Poison poison = mock(Poison.class);
+
+        //when
+        snake.drinksPoison(poison);
+
+        //then
+        assertFalse(snake.drinksPoison(poison));
+    }
+
+    @Test
     public void eatsSelf_true() {
         //IF
         SnakeHeadStateMachine headStateMock = mock(SnakeHeadStateMachine.class);

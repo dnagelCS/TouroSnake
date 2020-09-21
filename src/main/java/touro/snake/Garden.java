@@ -12,10 +12,13 @@ public class Garden {
     private final Snake snake;
     private final FoodFactory foodFactory;
     private Food food;
+    private final PoisonFactory poisonFactory;
+    private Poison poison;
 
-    public Garden(Snake snake, FoodFactory foodFactory) {
+    public Garden(Snake snake, FoodFactory foodFactory, PoisonFactory poisonFactory) {
         this.snake = snake;
         this.foodFactory = foodFactory;
+        this.poisonFactory = poisonFactory;
     }
 
     public Snake getSnake() {
@@ -26,6 +29,8 @@ public class Garden {
         return food;
     }
 
+    public Poison getPoison() {return poison; }
+
     /**
      * Moves the snake, checks to see if food has been eaten and creates food if necessary
      *
@@ -34,6 +39,7 @@ public class Garden {
     public boolean advance() {
         if (moveSnake()) {
             createFoodIfNecessary();
+            movePoison();
             return true;
         }
         return false;
@@ -47,8 +53,8 @@ public class Garden {
     boolean moveSnake() {
         snake.move();
 
-        //if collides with wall or self
-        if (!snake.inBounds() || snake.eatsSelf()) {
+        //if collides with wall, self, or poison
+        if (!snake.inBounds() || snake.eatsSelf() || snake.drinksPoison(poison)) {
             return false;
         }
 
@@ -58,6 +64,8 @@ public class Garden {
             snake.grow();
             //remove food
             food = null;
+            //remove previous poison
+            poison = null;
         }
         return true;
     }
@@ -77,4 +85,21 @@ public class Garden {
         }
     }
 
+    /**
+     * Moves the Poison to a new position if the snake ate Food.
+     */
+    void movePoison() {
+        if (poison == null) {
+            poison = poisonFactory.newInstance();
+
+            //if poison on snake or food, put it somewhere else
+            /*                              this is returning null pointer exception
+                                            in my test. I'm not sure why since  createFoodIfNecessary()
+                                            is called before movePoison() in advance() so I don't see
+                                            why food would be null */
+            while (snake.intersects(poison) || food.equals(poison)) {
+                poison = poisonFactory.newInstance();
+            }
+        }
+    }
 }

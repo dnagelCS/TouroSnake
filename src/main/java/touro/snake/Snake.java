@@ -104,6 +104,14 @@ public class Snake {
     }
 
     /**
+     * @param poison
+     * @return true if the Poison intersects with the Snake, otherwise false.
+     */
+    public boolean intersects(Poison poison) {
+        return squares.contains(poison);
+    }
+
+    /**
      * @return true if the Snake is within the bounds of the Garden, otherwise false.
      */
     public boolean inBounds() {
@@ -132,6 +140,14 @@ public class Snake {
         return false;
     }
 
+    /**
+     * @return true if the head of the Snake has collided with poison, otherwise false.
+     */
+    public boolean drinksPoison(Poison poison) {
+        Square head = getHead();
+
+        return head.equals(poison);
+    }
 
     public boolean getGrow() {
         return grow;

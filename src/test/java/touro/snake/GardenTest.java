@@ -13,12 +13,15 @@ public class GardenTest {
         in death.
          */
         //given
+        Poison poison = mock(Poison.class);
         Snake snake = mock(Snake.class);
         FoodFactory foodFactory = mock(FoodFactory.class);
-        Garden garden = new Garden(snake, foodFactory);
+        PoisonFactory poisonFactory = mock(PoisonFactory.class);
+        Garden garden = new Garden(snake, foodFactory, poisonFactory);
 
         doReturn(true).when(snake).inBounds();
         doReturn(false).when(snake).eatsSelf();
+        doReturn(false).when(snake).drinksPoison(poison);
         Square square = mock(Square.class);
         doReturn(square).when(snake).getHead();
 
@@ -33,7 +36,8 @@ public class GardenTest {
         //given
         Snake snake = mock(Snake.class);
         FoodFactory foodFactory = mock(FoodFactory.class);
-        Garden garden = new Garden(snake, foodFactory);
+        PoisonFactory poisonFactory = mock(PoisonFactory.class);
+        Garden garden = new Garden(snake, foodFactory, poisonFactory);
         when(foodFactory.newInstance()).thenReturn(mock(Food.class));
 
         //when
@@ -42,5 +46,23 @@ public class GardenTest {
         //then
         verify(foodFactory).newInstance();
         assertNotNull(garden.getFood());
+    }
+
+    @Test
+    public void movePoison() {
+        //given
+        Snake snake = mock(Snake.class);
+        FoodFactory foodFactory = mock(FoodFactory.class);
+        PoisonFactory poisonFactory = mock(PoisonFactory.class);
+        Garden garden = new Garden(snake, foodFactory, poisonFactory);
+        when(poisonFactory.newInstance()).thenReturn(mock(Poison.class));
+
+        //when
+        garden.movePoison();
+
+        //then
+        //test fails, see movePoison() in Garden
+        verify(poisonFactory).newInstance();
+        assertNotNull(garden.getPoison());
     }
 }
