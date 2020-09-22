@@ -27,7 +27,7 @@ public class GardenTest {
 
         //when and then
         assertTrue(garden.moveSnake());
-        verify(snake).move();
+        verify(snake).move(poison);
     }
 
     @Test

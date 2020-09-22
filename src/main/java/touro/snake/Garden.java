@@ -14,6 +14,7 @@ public class Garden {
     private Food food;
     private final PoisonFactory poisonFactory;
     private Poison poison;
+    private static final int MIN_SIZE = 2;
 
     public Garden(Snake snake, FoodFactory foodFactory, PoisonFactory poisonFactory) {
         this.snake = snake;
@@ -51,11 +52,17 @@ public class Garden {
      * @return true if the Snake is still alive, otherwise false.
      */
     boolean moveSnake() {
-        snake.move();
+        snake.move(poison);
 
-        //if collides with wall, self, or poison
-        if (!snake.inBounds() || snake.eatsSelf() || snake.drinksPoison(poison)) {
+        //if collides with wall, self, or poison at length 2
+        if (!snake.inBounds() || snake.eatsSelf() || snake.getSquares().size() < MIN_SIZE) {
             return false;
+        }
+
+        //if collides with poison, shrink the snake
+        if (snake.getHead().equals(poison) && snake.getSquares().size() >= MIN_SIZE) {
+            snake.shrink();
+            poison = null;
         }
 
         //if snake eats the food

@@ -18,6 +18,8 @@ public class Snake {
 
     private boolean grow = false;
 
+    private boolean shrink = false;
+
     public Snake(SnakeHeadStateMachine snakeHeadStateMachine) {
         this.snakeHeadStateMachine = snakeHeadStateMachine;
         createSnake();
@@ -45,6 +47,13 @@ public class Snake {
         setGrow(true);
     }
 
+    /**
+     * Shrinks the Snake one square.
+     */
+    public void shrink() {
+        setShrink(true);
+    }
+
     public void turnTo(Direction newDirection) {
         snakeHeadStateMachine.turnTo(newDirection);
     }
@@ -56,7 +65,7 @@ public class Snake {
     /**
      * Moves the Snake forward in whatever direction the head is facing.
      */
-    public void move() {
+    public void move(Poison poison) {
 
         //get direction
         Direction direction = snakeHeadStateMachine.getDirection();
@@ -85,14 +94,18 @@ public class Snake {
                 System.out.println("ERROR: Direction is not valid or is null");
                 return;
         }
+
         squares.add(0, newSquare);
         if (!getGrow()) {
             squares.remove(squares.size() - 1);
         } else {
             setGrow(false);
         }
-
-
+        if (drinksPoison(poison) && getSquares().size() >= 2) {
+            squares.remove(squares.size() - 2);
+        } else {
+            setShrink(false);
+        }
     }
 
     /**
@@ -155,5 +168,13 @@ public class Snake {
 
     public void setGrow(boolean grow) {
         this.grow = grow;
+    }
+
+    public boolean getShrink() {
+        return shrink;
+    }
+
+    public void setShrink(boolean shrink) {
+        this.shrink = shrink;
     }
 }

@@ -32,6 +32,7 @@ public class SnakeTest {
     public void move() {
 
         //if
+        Poison poison = mock(Poison.class);
         SnakeHeadStateMachine state = mock(SnakeHeadStateMachine.class);
         Snake snake = new Snake(state);
         when(state.getDirection()).thenReturn(Direction.North);
@@ -40,7 +41,7 @@ public class SnakeTest {
         int prevLastIndex = previousSquares.size() - 1;
 
         //when
-        snake.move();
+        snake.move(poison);
 
         //then
         List<Square> currentSquares = snake.getSquares();
@@ -187,10 +188,11 @@ public class SnakeTest {
     @Test
     public void inBounds_true() {
         //given
+        Poison poison = mock(Poison.class);
         SnakeHeadStateMachine snakeHeadStateMachine = mock(SnakeHeadStateMachine.class);
         Snake snake = new Snake(snakeHeadStateMachine);
         //when
-        snake.move();
+        snake.move(poison);
         //then
         assertTrue(snake.inBounds());
     }
@@ -198,12 +200,13 @@ public class SnakeTest {
     @Test
     public void inBounds_false() {
         //given
+        Poison poison = mock(Poison.class);
         SnakeHeadStateMachine snakeHeadStateMachine = mock(SnakeHeadStateMachine.class);
         Snake snake = new Snake(snakeHeadStateMachine);
         //when
         //number of iterations to be determined
         for (int i = 0; i < 100; i++) {
-            snake.move();
+            snake.move(poison);
         }
         //then
         assertFalse(snake.inBounds());
