@@ -1,6 +1,9 @@
 package touro.snake;
 
 import org.junit.Test;
+
+import java.util.List;
+
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
@@ -13,7 +16,6 @@ public class GardenTest {
         in death.
          */
         //given
-        Poison poison = mock(Poison.class);
         Snake snake = mock(Snake.class);
         FoodFactory foodFactory = mock(FoodFactory.class);
         PoisonFactory poisonFactory = mock(PoisonFactory.class);
@@ -21,13 +23,18 @@ public class GardenTest {
 
         doReturn(true).when(snake).inBounds();
         doReturn(false).when(snake).eatsSelf();
-        doReturn(false).when(snake).drinksPoison(poison);
-        //Square square = mock(Square.class);
-        //doReturn(square).when(snake).getHead();
-        when(snake.getHead()).thenReturn(mock(Square.class));
+
+        Square square = mock(Square.class);
+        doReturn(square).when(snake).getHead();
+
+        List<Square> squares = snake.getSquares();
+        for (int i = 0; i < 10; i++) {
+            squares.add(square);
+        }
+        when(snake.getSquares()).thenReturn(squares);
+
         //when and then
         assertTrue(garden.moveSnake());
-        verify(snake).move(poison);
     }
 
     @Test

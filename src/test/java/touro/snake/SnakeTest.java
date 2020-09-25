@@ -84,13 +84,10 @@ public class SnakeTest {
         List<Square> list = snake.getSquares();
         list.set(4,snakeSquare);
 
-        //when
-        boolean contains = snake.contains(food, poison);
-
-        //then
+        //when and then
         assertEquals(snakeSquare, poison);
         assertNotEquals(snakeSquare, food);
-        assertTrue(contains);
+        assertTrue(snake.contains(food, poison));
     }
 
     @Test
@@ -101,11 +98,8 @@ public class SnakeTest {
         Food food = mock(Food.class);
         Poison poison = mock(Poison.class);
 
-        //when
-        boolean contains = snake.contains(food, poison);
-
-        //then
-        assertFalse(contains);
+        //when and then
+        assertFalse(snake.contains(food, poison));
     }
 
     @Test
@@ -119,14 +113,11 @@ public class SnakeTest {
         List<Square> squares = snake.getSquares();
         squares.set(0,snakeHead);
 
-        //when
-        boolean poisoned = snake.drinksPoison(poisonSquare);
-
-        //then
+        //when and then
         assertEquals(snakeHead, poisonSquare);
         assertEquals(snake.getHead(), snakeHead);
         assertEquals(snake.getHead(), poisonSquare);
-        assertTrue(poisoned);
+        assertTrue(snake.drinksPoison(poisonSquare));
     }
 
     @Test
@@ -136,11 +127,8 @@ public class SnakeTest {
         Snake snake = new Snake(snakeHeadStateMachine);
         Poison poison = mock(Poison.class);
 
-        //when
-        boolean poisoned = snake.drinksPoison(poison);
-
-        //then
-        assertFalse(poisoned);
+        //when and then
+        assertFalse(snake.drinksPoison(poison));
     }
 
     @Test
