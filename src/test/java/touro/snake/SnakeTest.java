@@ -171,6 +171,7 @@ public class SnakeTest {
         //given
         Poison poison = mock(Poison.class);
         SnakeHeadStateMachine snakeHeadStateMachine = mock(SnakeHeadStateMachine.class);
+        when(snakeHeadStateMachine.getDirection()).thenReturn(Direction.West);
         Snake snake = new Snake(snakeHeadStateMachine);
         //when
         snake.move(poison);
@@ -183,6 +184,7 @@ public class SnakeTest {
         //given
         Poison poison = mock(Poison.class);
         SnakeHeadStateMachine snakeHeadStateMachine = mock(SnakeHeadStateMachine.class);
+        when(snakeHeadStateMachine.getDirection()).thenReturn(Direction.West);
         Snake snake = new Snake(snakeHeadStateMachine);
         //when
         //number of iterations to be determined
