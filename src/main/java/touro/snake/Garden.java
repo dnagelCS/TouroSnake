@@ -39,8 +39,7 @@ public class Garden {
      */
     public boolean advance() {
         if (moveSnake()) {
-            createFoodIfNecessary();
-            movePoison();
+            moveFoodAndPoison();
             return true;
         }
         return false;
@@ -78,33 +77,18 @@ public class Garden {
     }
 
     /**
-     * Creates a Food if there isn't one, making sure it's not already on a Square occupied by the Snake.
+     * Creates or moves the Food and Poison respectively if Snake ate either one,
+     * making sure neither are on a Square occupied by the Snake.
      */
-    void createFoodIfNecessary() {
-        //if snake ate food, create new one
-        if (food == null) {
+    void moveFoodAndPoison() {
+        //if snake ate food or poison, move them
+        if (food == null || poison == null) {
             food = foodFactory.newInstance();
-
-            //if new food on snake, put it somewhere else
-            while (snake.contains(food)) {
-                food = foodFactory.newInstance();
-            }
-        }
-    }
-
-    /**
-     * Moves the Poison to a new position if the snake ate Food.
-     */
-    void movePoison() {
-        if (poison == null) {
             poison = poisonFactory.newInstance();
 
-            //if poison on snake or food, put it somewhere else
-            /*                              this is returning null pointer exception
-                                            in my test. I'm not sure why since  createFoodIfNecessary()
-                                            is called before movePoison() in advance() so I don't see
-                                            why food would be null */
-            while (snake.intersects(poison) || food.equals(poison)) {
+            //if new food or poison on snake, put it somewhere else
+            while (snake.contains(food, poison)) {
+                food = foodFactory.newInstance();
                 poison = poisonFactory.newInstance();
             }
         }

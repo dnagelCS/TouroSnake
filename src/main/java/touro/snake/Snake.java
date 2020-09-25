@@ -110,18 +110,14 @@ public class Snake {
 
     /**
      * @param food
-     * @return true if the Food intersects with the Snake, otherwise false.
-     */
-    public boolean contains(Food food) {
-        return squares.contains(food);
-    }
-
-    /**
      * @param poison
-     * @return true if the Poison intersects with the Snake, otherwise false.
+     * @return true if the Food or Poison intersects with the Snake, otherwise false.
      */
-    public boolean intersects(Poison poison) {
-        return squares.contains(poison);
+    public boolean contains(Food food, Poison poison) {
+        if (squares.contains(food) || squares.contains(poison)) {
+            return true;
+        }
+        else {return false;}
     }
 
     /**
@@ -132,7 +128,7 @@ public class Snake {
         int x = head.getX();
         int y = head.getY();
 
-        return x > 0 && x < Garden.WIDTH && y > 0 && y < Garden.HEIGHT;
+        return x > -1 && x < Garden.WIDTH && y > 0 && y < Garden.HEIGHT;
     }
 
     /**

@@ -74,45 +74,38 @@ public class SnakeTest {
 
     @Test
     public void contains_true() {
-        throw new UnsupportedOperationException("Not Implemented Yet.");
-    }
-
-    @Test
-    public void contains_false() {
-        throw new UnsupportedOperationException("Not Implemented Yet.");
-    }
-
-    @Test
-    public void intersectsPoison_true() {
         //given
         SnakeHeadStateMachine snakeHeadStateMachine = mock(SnakeHeadStateMachine.class);
         Snake snake = new Snake(snakeHeadStateMachine);
 
+        Food food = new Food(50,50);
         Poison poison = new Poison(25,25);
         Square snakeSquare = new Square(25,25);
         List<Square> list = snake.getSquares();
         list.set(4,snakeSquare);
 
         //when
-        snake.intersects(poison);
+        boolean contains = snake.contains(food, poison);
 
         //then
         assertEquals(snakeSquare, poison);
-        assertTrue(snake.intersects(poison));
+        assertNotEquals(snakeSquare, food);
+        assertTrue(contains);
     }
 
     @Test
-    public void intersectsPoison_false() {
+    public void contains_false() {
         //given
         SnakeHeadStateMachine snakeHeadStateMachine = mock(SnakeHeadStateMachine.class);
         Snake snake = new Snake(snakeHeadStateMachine);
+        Food food = mock(Food.class);
         Poison poison = mock(Poison.class);
 
         //when
-        snake.intersects(poison);
+        boolean contains = snake.contains(food, poison);
 
         //then
-        assertFalse(snake.intersects(poison));
+        assertFalse(contains);
     }
 
     @Test
@@ -127,13 +120,13 @@ public class SnakeTest {
         squares.set(0,snakeHead);
 
         //when
-        snake.drinksPoison(poisonSquare);
+        boolean poisoned = snake.drinksPoison(poisonSquare);
 
         //then
         assertEquals(snakeHead, poisonSquare);
         assertEquals(snake.getHead(), snakeHead);
         assertEquals(snake.getHead(), poisonSquare);
-        assertTrue(snake.drinksPoison(poisonSquare));
+        assertTrue(poisoned);
     }
 
     @Test
@@ -144,10 +137,10 @@ public class SnakeTest {
         Poison poison = mock(Poison.class);
 
         //when
-        snake.drinksPoison(poison);
+        boolean poisoned = snake.drinksPoison(poison);
 
         //then
-        assertFalse(snake.drinksPoison(poison));
+        assertFalse(poisoned);
     }
 
     @Test
