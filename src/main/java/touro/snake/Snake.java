@@ -65,7 +65,7 @@ public class Snake {
     /**
      * Moves the Snake forward in whatever direction the head is facing.
      */
-    public void move(Poison poison) {
+    public void move() {
 
         //get direction
         Direction direction = snakeHeadStateMachine.getDirection();
@@ -100,11 +100,6 @@ public class Snake {
             squares.remove(squares.size() - 1);
         } else {
             setGrow(false);
-        }
-        if (drinksPoison(poison) && getSquares().size() >= 2) {
-            squares.remove(squares.size() - 2);
-        } else {
-            setShrink(false);
         }
     }
 

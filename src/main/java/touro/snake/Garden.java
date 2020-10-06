@@ -51,7 +51,7 @@ public class Garden {
      * @return true if the Snake is still alive, otherwise false.
      */
     boolean moveSnake() {
-        snake.move(poison);
+        snake.move();
 
         //if collides with wall, self, or poison at length 2
         if (!snake.inBounds() || snake.eatsSelf() || snake.getSquares().size() < MIN_SIZE) {
@@ -59,9 +59,12 @@ public class Garden {
         }
 
         //if collides with poison, shrink the snake
-        if (snake.getHead().equals(poison) && snake.getSquares().size() >= MIN_SIZE) {
+        if (snake.drinksPoison(poison) && snake.getSquares().size() >= MIN_SIZE) {
             snake.shrink();
+            snake.getSquares().remove(snake.getSquares().size() - 2);
             poison = null;
+        } else {
+            snake.setShrink(false);
         }
 
         //if snake eats the food

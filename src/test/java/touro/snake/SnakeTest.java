@@ -41,7 +41,7 @@ public class SnakeTest {
         int prevLastIndex = previousSquares.size() - 1;
 
         //when
-        snake.move(poison);
+        snake.move();
 
         //then
         List<Square> currentSquares = snake.getSquares();
@@ -174,7 +174,7 @@ public class SnakeTest {
         when(snakeHeadStateMachine.getDirection()).thenReturn(Direction.West);
         Snake snake = new Snake(snakeHeadStateMachine);
         //when
-        snake.move(poison);
+        snake.move();
         //then
         assertTrue(snake.inBounds());
     }
@@ -189,7 +189,7 @@ public class SnakeTest {
         //when
         //number of iterations to be determined
         for (int i = 0; i < 100; i++) {
-            snake.move(poison);
+            snake.move();
         }
         //then
         assertFalse(snake.inBounds());
