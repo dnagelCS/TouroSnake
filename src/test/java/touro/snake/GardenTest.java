@@ -2,6 +2,8 @@ package touro.snake;
 
 import org.junit.Test;
 
+import javax.sound.sampled.Clip;
+
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -19,7 +21,8 @@ public class GardenTest {
         Snake snake = mock(Snake.class);
         FoodFactory foodFactory = mock(FoodFactory.class);
         PoisonFactory poisonFactory = mock(PoisonFactory.class);
-        Garden garden = new Garden(snake, foodFactory, poisonFactory);
+        Clip clip = mock(Clip.class);
+        Garden garden = new Garden(snake, foodFactory, poisonFactory, clip);
 
         doReturn(true).when(snake).inBounds();
         doReturn(false).when(snake).eatsSelf();
@@ -43,8 +46,9 @@ public class GardenTest {
         //given
         Snake snake = mock(Snake.class);
         FoodFactory foodFactory = mock(FoodFactory.class);
+        Clip clip = mock(Clip.class);
         PoisonFactory poisonFactory = mock(PoisonFactory.class);
-        Garden garden = new Garden(snake, foodFactory, poisonFactory);
+        Garden garden = new Garden(snake, foodFactory, poisonFactory, clip);
         when(foodFactory.newInstance()).thenReturn(mock(Food.class));
         when(poisonFactory.newInstance()).thenReturn(mock(Poison.class));
 
@@ -56,5 +60,29 @@ public class GardenTest {
         verify(poisonFactory).newInstance();
         assertNotNull(garden.getFood());
         assertNotNull(garden.getPoison());
+    }
+
+    @Test
+    public void playSound() {
+        //given
+        Snake snake = mock(Snake.class);
+        FoodFactory foodFactory = mock(FoodFactory.class);
+        PoisonFactory poisonFactory = mock(PoisonFactory.class);
+        Food food = new Food(50, 20);
+        when(foodFactory.newInstance()).thenReturn(food);
+        Clip clip = mock(Clip.class);
+        Garden garden = new Garden(snake, foodFactory, poisonFactory, clip);
+        List<Square> squares = List.of(new Square(50, 20));
+
+        when(snake.inBounds()).thenReturn(true);
+        when(snake.eatsSelf()).thenReturn(false);
+        when(snake.getHead()).thenReturn(squares.get(0));
+
+        //when
+        garden.moveFoodAndPoison();
+        garden.moveSnake();
+
+        //then
+        verify(clip).start();
     }
 }

@@ -69,7 +69,15 @@ public class SnakeTest {
 
     @Test
     public void turnTo() {
-        throw new UnsupportedOperationException("Not Implemented Yet.");
+        //given
+        SnakeHeadStateMachine snakeHeadStateMachine = mock(SnakeHeadStateMachine.class);
+        Snake snake = new Snake(snakeHeadStateMachine);
+
+        //when
+        snake.turnTo(Direction.South);
+
+        //then
+        verify(snakeHeadStateMachine).turnTo(Direction.South);
     }
 
     @Test
@@ -78,6 +86,7 @@ public class SnakeTest {
         SnakeHeadStateMachine snakeHeadStateMachine = mock(SnakeHeadStateMachine.class);
         Snake snake = new Snake(snakeHeadStateMachine);
 
+<<<<<<< HEAD
         Food food = new Food(50,50);
         Poison poison = new Poison(25,25);
         Square snakeSquare = new Square(25,25);
@@ -88,6 +97,17 @@ public class SnakeTest {
         assertEquals(snakeSquare, poison);
         assertNotEquals(snakeSquare, food);
         assertTrue(snake.contains(food, poison));
+=======
+        Food food = new Food(56, 20);
+        List<Square> squares = snake.getSquares();
+        squares.add(new Square(56,20));
+
+        //when
+        boolean contains = snake.contains(food);
+
+        //then
+        assertTrue(contains);
+>>>>>>> 446652bcd573ddfd5690afd53c6b40a6a00a9703
     }
 
     @Test
@@ -95,6 +115,7 @@ public class SnakeTest {
         //given
         SnakeHeadStateMachine snakeHeadStateMachine = mock(SnakeHeadStateMachine.class);
         Snake snake = new Snake(snakeHeadStateMachine);
+<<<<<<< HEAD
         Food food = mock(Food.class);
         Poison poison = mock(Poison.class);
 
@@ -129,6 +150,17 @@ public class SnakeTest {
 
         //when and then
         assertFalse(snake.drinksPoison(poison));
+=======
+
+        Food food = mock(Food.class);
+
+        //when
+        boolean contains = snake.contains(food);
+
+        //then
+        assertFalse(contains);
+
+>>>>>>> 446652bcd573ddfd5690afd53c6b40a6a00a9703
     }
 
     @Test
