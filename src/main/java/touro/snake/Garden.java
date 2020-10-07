@@ -5,9 +5,6 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import java.io.InputStream;
 
-import static javax.swing.plaf.basic.BasicLookAndFeel.playSound;
-
-
 /**
  * A model that contains the Snake and Food and is responsible for logic of moving the Snake,
  * seeing that food has been eaten and generating new food.

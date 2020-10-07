@@ -16,23 +16,13 @@ public class SnakeMain {
         SnakeHeadStateMachine snakeHeadStateMachine = new SnakeHeadStateMachine(Direction.West);
         Snake snake = new Snake(snakeHeadStateMachine);
         FoodFactory foodFactory = new FoodFactory();
-<<<<<<< HEAD
         PoisonFactory poisonFactory = new PoisonFactory();
-        Garden garden = new Garden(snake, foodFactory, poisonFactory);
-        GardenView gardenView = new GardenView(garden);
-        SnakeKeyListener snakeKeyListener = new SnakeKeyListener(snake);
-
-        GardenThread thread = new GardenThread(garden, gardenView);
-        thread.start();
-
-        new SnakeFrame(gardenView, snakeKeyListener).setVisible(true);
-=======
         try {
             InputStream inputStream = Garden.class.getClassLoader().getResourceAsStream("EatNoise.wav");
             AudioInputStream audioIn = AudioSystem.getAudioInputStream(inputStream);
             Clip clip = AudioSystem.getClip();
             clip.open(audioIn);
-            Garden garden = new Garden(snake, foodFactory, clip);
+            Garden garden = new Garden(snake, foodFactory, poisonFactory, clip);
             GardenView gardenView = new GardenView(garden);
             SnakeKeyListener snakeKeyListener = new SnakeKeyListener(snake);
 
@@ -43,7 +33,5 @@ public class SnakeMain {
         } catch(Exception e) {
             e.printStackTrace();
         }
->>>>>>> 446652bcd573ddfd5690afd53c6b40a6a00a9703
     }
-
 }
