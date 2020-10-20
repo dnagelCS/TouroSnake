@@ -1,9 +1,6 @@
 package touro.snake;
 
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-import java.io.InputStream;
 
 /**
  * A model that contains the Snake and Food and is responsible for logic of moving the Snake,
@@ -66,7 +63,7 @@ public class Garden {
         }
 
         //if collides with poison, shrink the snake
-        if (snake.drinksPoison(poison) && snake.getSquares().size() >= MIN_SIZE) {
+        if (snake.drinksPoison(poison)) {
             snake.shrink();
             snake.getSquares().remove(snake.getSquares().size() - 2);
             poison = null;
