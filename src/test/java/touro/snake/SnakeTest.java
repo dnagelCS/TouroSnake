@@ -85,7 +85,7 @@ public class SnakeTest {
         //given
         SnakeHeadStateMachine snakeHeadStateMachine = mock(SnakeHeadStateMachine.class);
         Snake snake = new Snake(snakeHeadStateMachine);
-
+      
         Food food = new Food(50,50);
         Poison poison = new Poison(25,25);
         Square snakeSquare = new Square(25,25);
