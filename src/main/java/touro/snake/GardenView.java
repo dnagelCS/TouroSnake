@@ -18,6 +18,22 @@ public class GardenView extends JComponent {
         paintGrass(g);
         paintFood(g);
         paintSnake(g);
+        paintSearchSpace(g);
+        paintPath(g);
+    }
+
+    private void paintPath(Graphics g) {
+        g.setColor(Color.GRAY);
+        for (Square square : garden.getSnake().getStrategy().getPath()) {
+            g.fillRect(square.getX() * CELL_SIZE, square.getY() * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+        }
+    }
+
+    private void paintSearchSpace(Graphics g) {
+        g.setColor(Color.CYAN);
+        for (Square square : garden.getSnake().getStrategy().getSearchSpace()) {
+            g.fillRect(square.getX() * CELL_SIZE, square.getY() * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+        }
     }
 
     void paintGrass(Graphics g) {
