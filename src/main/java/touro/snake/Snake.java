@@ -20,6 +20,8 @@ public class Snake {
 
     private boolean grow = false;
 
+    private boolean shrink = false;
+
     public Snake(
             SnakeHeadStateMachine snakeHeadStateMachine,
             SnakeStrategy snakeStrategy
@@ -49,6 +51,13 @@ public class Snake {
      */
     public void grow() {
         setGrow(true);
+    }
+
+    /**
+     * Shrinks the Snake one square.
+     */
+    public void shrink() {
+        setShrink(true);
     }
 
     public void turnTo(Direction newDirection) {
@@ -96,7 +105,7 @@ public class Snake {
 
     /**
      * @param square
-     * @return true if the Food intersects with the Snake, otherwise false.
+     * @return true if a Square intersects with the Snake, otherwise false.
      */
     public boolean contains(Square square) {
         return squares.contains(square);
@@ -127,6 +136,14 @@ public class Snake {
         return false;
     }
 
+    /**
+     * @return true if the head of the Snake has collided with poison, otherwise false.
+     */
+    public boolean drinksPoison(Poison poison) {
+        Square head = getHead();
+
+        return head.equals(poison);
+    }
 
     public boolean getGrow() {
         return grow;
@@ -134,5 +151,13 @@ public class Snake {
 
     public void setGrow(boolean grow) {
         this.grow = grow;
+    }
+
+    public boolean getShrink() {
+        return shrink;
+    }
+
+    public void setShrink(boolean shrink) {
+        this.shrink = shrink;
     }
 }

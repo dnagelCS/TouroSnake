@@ -1,7 +1,6 @@
 package touro.snake;
 
 import org.junit.Test;
-import org.mockito.Mockito;
 import touro.snake.strategy.SnakeStrategy;
 
 import javax.sound.sampled.Clip;
@@ -23,8 +22,9 @@ public class GardenTest {
         SnakeStrategy strategy = mock(SnakeStrategy.class);
         Snake snake = mock(Snake.class);
         FoodFactory foodFactory = mock(FoodFactory.class);
+        PoisonFactory poisonFactory = mock(PoisonFactory.class);
         Clip clip = mock(Clip.class);
-        Garden garden = new Garden(snake, foodFactory, clip);
+        Garden garden = new Garden(snake, foodFactory, poisonFactory, clip);
 
         doReturn(strategy).when(snake).getStrategy();
         doReturn(true).when(snake).inBounds();
@@ -32,54 +32,68 @@ public class GardenTest {
         Square square = mock(Square.class);
         doReturn(square).when(snake).getHead();
 
+        List<Square> squares = snake.getSquares();
+        for (int i = 0; i < 10; i++) {
+            squares.add(square);
+        }
+        when(snake.getSquares()).thenReturn(squares);
+
         //when and then
         assertTrue(garden.moveSnake());
         verify(snake).move();
     }
 
     @Test
-    public void createFoodIfNecessary() {
+    public void moveFoodAndPoison() {
 
         //given
         Snake snake = mock(Snake.class);
         FoodFactory foodFactory = mock(FoodFactory.class);
+        PoisonFactory poisonFactory = mock(PoisonFactory.class);
         Clip clip = mock(Clip.class);
-        Garden garden = new Garden(snake, foodFactory, clip);
+        Garden garden = new Garden(snake, foodFactory, poisonFactory, clip);
         when(foodFactory.newInstance()).thenReturn(mock(Food.class));
+        when(poisonFactory.newInstance()).thenReturn(mock(Poison.class));
 
         //when
-        garden.createFoodIfNecessary();
+        garden.moveFoodAndPoison();
 
         //then
         verify(foodFactory).newInstance();
+        verify(poisonFactory).newInstance();
         assertNotNull(garden.getFood());
+        assertNotNull(garden.getPoison());
     }
 
     @Test
     public void playSound() {
         //given
-
         SnakeStrategy strategy = mock(SnakeStrategy.class);
         Snake snake = mock(Snake.class);
         FoodFactory foodFactory = mock(FoodFactory.class);
         Food food = new Food(50, 20);
         when(foodFactory.newInstance()).thenReturn(food);
+        PoisonFactory poisonFactory = mock(PoisonFactory.class);
         Clip clip = mock(Clip.class);
-        Garden garden = new Garden(snake, foodFactory, clip);
-        List<Square> squares = List.of(new Square(50, 20));
+        Garden garden = new Garden(snake, foodFactory, poisonFactory, clip);
+        Square square = new Square(50, 20);
+        List<Square> squares = snake.getSquares();
+        for (int i = 0; i < 10; i++) {
+            squares.add(square);
+        }
 
         doReturn(strategy).when(snake).getStrategy();
         when(snake.inBounds()).thenReturn(true);
         when(snake.eatsSelf()).thenReturn(false);
         when(snake.getHead()).thenReturn(squares.get(0));
+        when(snake.getSquares()).thenReturn(squares);
 
         //when
-        garden.createFoodIfNecessary();
+        garden.moveFoodAndPoison();
         garden.moveSnake();
 
         //then
         verify(clip).start();
-
-
     }
 }
+

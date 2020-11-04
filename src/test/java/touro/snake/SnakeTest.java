@@ -1,12 +1,11 @@
 package touro.snake;
 
-import net.bytebuddy.dynamic.loading.InjectionClassLoader;
 import org.junit.Test;
-import touro.snake.strategy.BlankStrategy;
 import touro.snake.strategy.SnakeStrategy;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
@@ -20,7 +19,7 @@ public class SnakeTest {
         //if
         SnakeHeadStateMachine state = mock(SnakeHeadStateMachine.class);
         Snake snake = new Snake(state, strategy);
-       // when(state.getDirection()).thenReturn(Direction.North); //The direction of the head is irrelevant
+        // when(state.getDirection()).thenReturn(Direction.North); //The direction of the head is irrelevant
 
         //when
         snake.grow();
@@ -86,16 +85,17 @@ public class SnakeTest {
         //given
         SnakeHeadStateMachine snakeHeadStateMachine = mock(SnakeHeadStateMachine.class);
         Snake snake = new Snake(snakeHeadStateMachine, strategy);
+        Food food = new Food(50, 50);
+        Poison poison = new Poison(25,25);
+        Square snakeSquare = new Square(25,25);
+        List<Square> list = snake.getSquares();
+        list.set(4, snakeSquare);
 
-        Food food = new Food(56, 20);
-        List<Square> squares = snake.getSquares();
-        squares.add(new Square(56,20));
-
-        //when
-        boolean contains = snake.contains(food);
-
-        //then
-        assertTrue(contains);
+        //when and then
+        assertEquals(snakeSquare, poison);
+        assertNotEquals(snakeSquare, food);
+        assertTrue(snake.contains(snakeSquare));
+        assertTrue(snake.contains(poison));
     }
 
     @Test
@@ -104,14 +104,48 @@ public class SnakeTest {
         SnakeHeadStateMachine snakeHeadStateMachine = mock(SnakeHeadStateMachine.class);
         Snake snake = new Snake(snakeHeadStateMachine, strategy);
 
-        Food food = mock(Food.class);
+        Food food = new Food(50, 50);
+        Poison poison = new Poison(35,35);
+        Square snakeSquare = new Square(25,25);
+        List<Square> list = snake.getSquares();
+        list.set(4, snakeSquare);
 
-        //when
-        boolean contains = snake.contains(food);
+        //when and then
+        assertNotEquals(snakeSquare, food);
+        assertNotEquals(snakeSquare, poison);
+        assertFalse(snake.contains(food));
+        assertFalse(snake.contains(poison));
+    }
 
-        //then
-        assertFalse(contains);
+    @Test
+    public void drinksPoison_true() {
+        //given
+        SnakeHeadStateMachine snakeHeadStateMachine = mock(SnakeHeadStateMachine.class);
+        SnakeStrategy snakeStrategy = mock(SnakeStrategy.class);
+        Snake snake = new Snake(snakeHeadStateMachine, snakeStrategy);
 
+        Poison poisonSquare = new Poison(50,50);
+        Square snakeHead = new Square(50,50);
+        List<Square> squares = snake.getSquares();
+        squares.set(0,snakeHead);
+
+        //when and then
+        assertEquals(snakeHead, poisonSquare);
+        assertEquals(snake.getHead(), snakeHead);
+        assertEquals(snake.getHead(), poisonSquare);
+        assertTrue(snake.drinksPoison(poisonSquare));
+    }
+
+    @Test
+    public void drinksPoison_false() {
+        //given
+        SnakeHeadStateMachine snakeHeadStateMachine = mock(SnakeHeadStateMachine.class);
+        SnakeStrategy snakeStrategy = mock(SnakeStrategy.class);
+        Snake snake = new Snake(snakeHeadStateMachine, snakeStrategy);
+        Poison poison = mock(Poison.class);
+
+        //when and then
+        assertFalse(snake.drinksPoison(poison));
     }
 
     @Test
@@ -127,7 +161,7 @@ public class SnakeTest {
         list.set(0,headSquare);
 
         //WHEN
-       boolean val = snake.eatsSelf();
+        boolean val = snake.eatsSelf();
 
         //THEN
         assertTrue(val);
@@ -165,11 +199,11 @@ public class SnakeTest {
     public void inBounds_false() {
         //given
         SnakeHeadStateMachine snakeHeadStateMachine = mock(SnakeHeadStateMachine.class);
-        int leaveBounds = Garden.WIDTH;
         when(snakeHeadStateMachine.getDirection()).thenReturn(Direction.West);
         Snake snake = new Snake(snakeHeadStateMachine, strategy);
         //when
-        for (int i = 0; i < leaveBounds; i++) {
+        //number of iterations to be determined
+        for (int i = 0; i < 100; i++) {
             snake.move();
         }
         //then

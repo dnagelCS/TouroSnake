@@ -15,12 +15,13 @@ public class SnakeMain {
         SnakeHeadStateMachine snakeHeadStateMachine = new SnakeHeadStateMachine(Direction.West);
         Snake snake = new Snake(snakeHeadStateMachine, new BlankStrategy());
         FoodFactory foodFactory = new FoodFactory();
+        PoisonFactory poisonFactory = new PoisonFactory();
         try {
             InputStream inputStream = Garden.class.getClassLoader().getResourceAsStream("EatNoise.wav");
             AudioInputStream audioIn = AudioSystem.getAudioInputStream(inputStream);
             Clip clip = AudioSystem.getClip();
             clip.open(audioIn);
-            Garden garden = new Garden(snake, foodFactory, clip);
+            Garden garden = new Garden(snake, foodFactory, poisonFactory, clip);
             GardenView gardenView = new GardenView(garden);
             SnakeKeyListener snakeKeyListener = new SnakeKeyListener(snake);
 

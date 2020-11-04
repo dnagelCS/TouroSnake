@@ -1,10 +1,6 @@
 package touro.snake;
 
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import java.io.InputStream;
-
+import javax.sound.sampled.*;
 
 /**
  * A model that contains the Snake and Food and is responsible for logic of moving the Snake,
@@ -17,14 +13,21 @@ public class Garden {
 
     private final Snake snake;
     private final FoodFactory foodFactory;
+    private final PoisonFactory poisonFactory;
     private Food food;
+    private Poison poison;
     private Clip clip;
 
-    public Garden(Snake snake, FoodFactory foodFactory, Clip clip) {
+    private static final int MIN_SIZE = 2;
+
+    public Garden(Snake snake, FoodFactory foodFactory, PoisonFactory poisonFactory, Clip clip) {
         this.snake = snake;
         this.foodFactory = foodFactory;
+        this.poisonFactory = poisonFactory;
         this.clip = clip;
     }
+
+    public Poison getPoison() {return poison; }
 
     public Snake getSnake() {
         return snake;
@@ -41,7 +44,7 @@ public class Garden {
      */
     public boolean advance() {
         if (moveSnake()) {
-            createFoodIfNecessary();
+            moveFoodAndPoison();
             return true;
         }
         return false;
@@ -54,12 +57,20 @@ public class Garden {
      */
     boolean moveSnake() {
         snake.getStrategy().turnSnake(snake, this);
-
         snake.move();
 
-        //if collides with wall or self
-        if (!snake.inBounds() || snake.eatsSelf()) {
+        //if collides with wall or self or smaller than MIN LENGTH
+        if (!snake.inBounds() || snake.eatsSelf() || snake.getSquares().size() < MIN_SIZE) {
             return false;
+        }
+
+        if (snake.drinksPoison(poison)) {
+            playSound();
+            snake.shrink();
+            snake.getSquares().remove(snake.getSquares().size() - 2);
+            poison = null;
+        } else {
+            snake.setShrink(false);
         }
 
         //if snake eats the food
@@ -70,21 +81,26 @@ public class Garden {
             playSound();
             //remove food
             food = null;
+            //remove poison
+            poison = null;
         }
         return true;
     }
 
     /**
-     * Creates a Food if there isn't one, making sure it's not already on a Square occupied by the Snake.
+     * Creates or moves the Food and Poison respectively if Snake ate either one,
+     * making sure neither are on a Square occupied by the Snake.
      */
-    void createFoodIfNecessary() {
-        //if snake ate food, create new one
-        if (food == null) {
+    void moveFoodAndPoison() {
+        //if snake ate food or poison, move them
+        if (food == null || poison == null) {
             food = foodFactory.newInstance();
+            poison = poisonFactory.newInstance();
 
-            //if new food on snake, put it somewhere else
-            while (snake.contains(food)) {
+            //if new food or poison on snake, put it somewhere else
+            while (snake.contains(food) || snake.contains(poison)) {
                 food = foodFactory.newInstance();
+                poison = poisonFactory.newInstance();
             }
         }
     }
@@ -102,9 +118,5 @@ public class Garden {
             e.printStackTrace();
         }
     }
-
-
-
-
-
 }
+
